@@ -2,15 +2,18 @@ package listatresoop;
 
 public class Animal {
 	
-	private String nome;
-	private int idade;
+	//ATRIBUTOS
+	protected String nome;
+	protected int idade;
 	
+	//CONSTRUTOR
 	public Animal(String nome, int idade) {
 		super();
 		this.nome = nome;
 		this.idade = idade;
 	}
 	
+	//ENCAPSULAMENTO
 	public String getNome() {
 		return nome;
 	}
@@ -24,14 +27,9 @@ public class Animal {
 		this.idade = idade;
 	}
 
-	
-	public void emitirSim() {
+	//METDODO
+	public void emitirSom() {
 		System.out.println("Som animal");
 	}
-	
-	public void movimento() {
-		System.out.println("Movimento animal");
-	}
-	
 	
 }
