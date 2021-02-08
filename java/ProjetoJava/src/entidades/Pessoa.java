@@ -13,9 +13,9 @@ public class Pessoa {
 	
 	public String statusIdade() {
 		String mensagem;
-		int idade;
-		idade = 2021 - anoNascimento;
-		if (idade < 18) {
+		//int idade;
+		//idade = 2021 - anoNascimento;
+		if (this.idade() < 18) {
 			mensagem = "é menor que 18 anos e não pode comprar bebida alcoolica";
 			
 		} else {
@@ -29,10 +29,10 @@ public class Pessoa {
 		if (genero == 'F' && this.idade() > 17 ) {
 			pronome = "A Sra.";
 		}
-		else if (genero == 'M' && idade() > 17 ) {
+		else if (genero == 'M' && this.idade() > 17 ) {
 			pronome = "O Sr.";
 		}
-		else if (genero == 'O' && idade() > 17 ) {
+		else if (genero == 'O' && this.idade() > 17 ) {
 			pronome = "Srx.";
 		} else {
 			pronome = "Você";
