@@ -2,7 +2,6 @@ package ecommerce;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,6 +18,7 @@ public class Main {
 		do {
 			resetarEstoque();
 			cabecalho();
+			limparCarrinho();
 			cadastro();
 			int opcao;
 			do {
@@ -66,10 +66,10 @@ public class Main {
 	
 	public static void adicionarItens() {
 		linhaDupla();
-		mostrarLista();
 		int codigo;
 		char op;
 		do {
+			mostrarLista();
 			linhaDupla();
 			System.out.println("Digite o código do produto desejado: ");
 			codigo = checkInt();
@@ -115,9 +115,11 @@ public class Main {
 		mostrarCarrinho();
 		int codigo;
 		char op;
+		boolean codigoValido = false;
 		if(!carrinho.isEmpty()) {
 			do {
 				linhaDupla();
+				int qtdCompra = 0;
 				System.out.println("Digite o código do produto a alterar: ");
 				codigo = checkInt();
 				for(Produto prod : carrinho) {
@@ -125,16 +127,30 @@ public class Main {
 						prod.removerItem();
 						System.out.printf("Qual a nova quantidade? Temos %d no estoque: ", prod.getQtdEstoque());
 						prod.setQtdCompra(checkInt());
-						while(prod.getQtdCompra() > prod.getQtdEstoque()) {
+						while(prod.getQtdCompra() > prod.getQtdEstoque() || prod.getQtdCompra() < 1) {
 							System.out.printf("Digite um valor valido:");
 							prod.setQtdCompra(checkInt());	
 						}
+						qtdCompra = prod.getQtdCompra();
 						prod.comprar(prod.getQtdCompra());
+						codigoValido = true;
 					}
 				}
-				cliente.precoTotal = 0;
-				for(Produto prod : carrinho) {
-					cliente.precoTotal += prod.getPrecoTotalProduto();
+				if(codigoValido) {
+					cliente.precoTotal = 0;
+					for(Produto prod : carrinho) {
+						cliente.precoTotal += prod.getPrecoTotalProduto();
+						qtdCompra = prod.getQtdCompra();
+					}
+					for(Produto prod : produto) {
+						if(prod.getCodigo() == codigo) {
+							prod.removerItem();
+							prod.comprar(qtdCompra);
+						}
+						
+					}
+				}else {
+					System.out.println("Código inválido.");
 				}
 				System.out.println("Deseja realizar mais alguma alteração?[S/N] ");
 				op = leia.next().toUpperCase().charAt(0);
@@ -154,22 +170,28 @@ public class Main {
 			do {
 				System.out.println("Digite o código do produto quer remover: ");
 				codigo = leia.nextInt();
-				int tempCodigo = 1;
+				int tempCodigo = 11;
+				boolean codigoValido = false;
 				for (Produto prod : carrinho) {
 					if (prod.getCodigo() == codigo) {
 						tempCodigo = carrinho.indexOf(prod);
+						codigoValido = true;
 					}
 				}
-				carrinho.remove(tempCodigo);
-				for (Produto prod : produto) {
-					if (prod.getCodigo() == codigo) {
-						cliente.precoTotal -= prod.getPrecoTotalProduto();
-						prod.removerItem();
+				if(codigoValido) {					
+					carrinho.remove(tempCodigo);
+					for (Produto prod : produto) {
+						if (prod.getCodigo() == codigo) {
+							cliente.precoTotal -= prod.getPrecoTotalProduto();
+							prod.removerItem();
+						}
 					}
-				}
-				cliente.precoTotal = 0;
-				for(Produto prod : carrinho) {
-					cliente.precoTotal += prod.getPrecoTotalProduto();
+					cliente.precoTotal = 0;
+					for(Produto prod : carrinho) {
+						cliente.precoTotal += prod.getPrecoTotalProduto();
+					}
+				}else {
+					System.out.println("Código invalido.");
 				}
 				mostrarCarrinho();
 				System.out.println("Deseja remover mais itens?[S/N] ");
@@ -216,7 +238,7 @@ public class Main {
 				double imposto = pedido.getPrecoTotal() * 0.09;
 		        System.out.printf("Impostos de 9%%: R$%.2f\n", imposto);
 		        System.out.printf("Forma de pagamento selecionada: %s\nPreço final: R$ %.2f\n",pedido.getPgto(),pedido.precoFinal,"\n");
-		        
+		        linhaDupla();
 			} else {
 				
 				System.out.println("Agradeçemos e volte sempre!");
@@ -246,7 +268,7 @@ public class Main {
 		for (Produto prod : carrinho) {
 			prod.getComprados();
 		}
-		System.out.printf("Subtotal: R$%.2f\n", cliente.getPrecoTotal());
+		System.out.printf("\nSubtotal: R$%.2f\n", cliente.getPrecoTotal());
 		
 	}
 
@@ -292,7 +314,6 @@ public class Main {
 	public static void resetarEstoque() {
 		for(Produto prod : produto) {
 			if(prod.getQtdEstoque() == 0) {
-				linhaDupla();
 				System.out.printf("\nRepondo estoque de %s\n", prod.getDescricao());
 				prod.setQtdEstoque(10);
 			}
@@ -320,6 +341,9 @@ public class Main {
 	public static void limparCarrinho() {
 		for(Produto prod : carrinho) {
 			prod.removerItem();
+		}
+		for(Produto prod : produto) {
+			prod.setQtdCompra(0);
 		}
 		cliente.setPrecoTotal(0);
 		carrinho.clear();

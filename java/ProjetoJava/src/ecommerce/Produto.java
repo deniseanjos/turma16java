@@ -1,6 +1,7 @@
 package ecommerce;
 
 public class Produto {
+	
 	private int codigo;
 	private String descricao;
 	private int qtdEstoque;

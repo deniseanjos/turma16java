@@ -15,14 +15,9 @@ public class Pedido {
 	
 	public void gerarNota(String nome, String tratamento) {
 		this.cabecalho();
-        System.out.println("Cliente: " + tratamento + nome);
-    
-    	
+        System.out.println("Cliente: " + tratamento + nome);	
 	}
 	
-	
-
-
 	public void setFormaPgto() {
 		Scanner leia = new Scanner(System.in);
 		char formaPgto = leia.next().charAt(0);

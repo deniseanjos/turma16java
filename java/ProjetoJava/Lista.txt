@@ -1,4 +1,4 @@
-1,haedset,10,150.00
+1,headset,10,150.00
 2,monitor,10,750.99
 3,teclado,10,230.00
 4,mouse,10,100.00
