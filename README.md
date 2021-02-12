@@ -2,8 +2,8 @@
 
 Bem-vindes ao meu GitHub. 
 
-Neste diretório você encontrará atividades desenvolvidas ao longo do bootcamp da Generation (janeiro à abril de 2021), tais como:
+Neste repositrio você encontrará atividades desenvolvidas ao longo do bootcamp da Generation (de janeiro à abril de 2021), tais como:
 
-- Introdução à Lógica de Programação em Portugol,
+- Portugol - Introdução à Lógica de Programação,
 - Java - Linguagem  de Programação Orientada a Objetos,
 - MySQL - Banco de Dados.
